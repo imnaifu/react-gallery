@@ -59,7 +59,6 @@ class Gallery extends React.Component {
         const halfImgFigureWidth = Math.ceil(imgFigureWidth / 2);
         const halfImgFigureHeight = Math.ceil(imgFigureHeight / 2);
 
-
         this.setState({
             imgPosRange: {
                 horizontal: {
@@ -83,6 +82,7 @@ class Gallery extends React.Component {
             },
         });
 
+        console.log(this.state.imgPosRange);
         this.rearrange(0);
     }
 
@@ -94,23 +94,38 @@ class Gallery extends React.Component {
     rearrange(centerIndex){
         const imgArrangeArr = this.state.imgArrangeArr;
         const imgPosRange = this.state.imgPosRange;
+        // console.log(imgArrangeArr);
+        // console.log(imgPosRange);
 
-        const imgArrangeArrCenter = imgArrangeArr.splice(centerIndex, 1);
-        imgArrangeArrCenter.pos = imgPosRange.center;
-
-        imgArrangeArr.forEach( function(element, index) {
+        //set position for let, right
+        imgArrangeArr.forEach((each, index) => {
+            // console.log(imgArrangeArr);
             if (index%2 === 1){
                 //put to left side
-                
-            }else{
+                // console.log(imgPosRange.horizontal.left.start);
+                // console.log(imgPosRange.horizontal.left.end);
+                each['pos']['left'] = this.getRandomBetween(imgPosRange.horizontal.left.start, imgPosRange.horizontal.left.end);
+                each['pos']['top'] = this.getRandomBetween(imgPosRange.vertical.start, imgPosRange.vertical.end);
+            }else{  
                 //put to right side
+                each['pos']['left'] = this.getRandomBetween(imgPosRange.horizontal.right.start, imgPosRange.horizontal.right.end);
+                each['pos']['top'] = this.getRandomBetween(imgPosRange.vertical.start, imgPosRange.vertical.end);
             }
         });
-        // const imgArrangeArrLeft = 
+
+        //set position for center
+        imgArrangeArr[centerIndex]['pos']['left'] = imgPosRange.center.left;
+        imgArrangeArr[centerIndex]['pos']['top'] = imgPosRange.center.top;
+
+
+        console.log(imgArrangeArr);
+        this.setState({
+            imgArrangeArr: imgArrangeArr
+        });
     }
 
     getRandomBetween(low, high){
-        return Math.ceil(Math.random() * (hight - low) + low);
+        return Math.ceil(Math.random() * (high - low) + low);
     }
 
     addImgPath(imgData){
@@ -126,7 +141,7 @@ class Gallery extends React.Component {
         imgInfos.forEach((each, index) => {
             if (!this.state.imgArrangeArr[index]){
                 const pos = {
-                    position: {
+                    pos: {
                         left: 0,
                         top: 0
                     }
@@ -146,7 +161,6 @@ class Gallery extends React.Component {
     }
 
     render() {
-
         return (
             <section className="gallery" ref={(ref) => {this.gallery=ref;}}>
                 <section className="img-sec">
