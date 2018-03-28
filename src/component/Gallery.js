@@ -3,12 +3,13 @@ import GalleryController from './GalleryController.js';
 import ImgFigure from './ImgFigure.js';
 
 require('../styles/main.scss'); //这里是同步的
-const imgData = require('../data/images.json');
 
 class Gallery extends React.Component {
 
     constructor(){
         super();
+        this.imgData = require('../data/images.json');
+        this.
         this.imgFigureDoms = [];
         this.state = {
             imgInfos: [],
