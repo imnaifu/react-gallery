@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import GalleryController from './GalleryController.js';
 import ImgFigure from './ImgFigure.js';
+import store from '../redux/store.js';
+import '../styles/main.scss'; 
 
-require('../styles/main.scss'); //这里是同步的
+// require('../styles/main.scss'); //这里是同步的
 
 class Gallery extends React.Component {
 
     constructor(){
         super();
         this.imgData = require('../data/images.json');
-        this.
         this.imgFigureDoms = [];
         this.state = {
             imgInfos: [],
