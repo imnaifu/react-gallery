@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+
+import store from '../redux/store.js';
 import Gallery from './Gallery.js';
 
 class App extends Component {
 
-    constructor(){
-        super()
-    }
-
     render() {
         return (
             <div className="App">
-                <Gallery />
+                <Provider store={store}>
+                    <Gallery />
+                </Provider>
             </div>
         );
     }

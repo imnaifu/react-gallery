@@ -1,11 +1,17 @@
-import { applyMiddleware, createStore } from 'redux';
-import reducers from './reducers/index.js';
+import { applyMiddleware, createStore, compose } from 'redux';
+import { createLogger } from 'redux-logger';
 
+import rootRecuder from './reducers/rootRecuder.js';
 
-const store = createStore(reducers);
+const initialState = {};
 
-store.subscribe(() => {
-	console.log('store changed', store.getState());
-})
+const middleware = applyMiddleware(createLogger());
 
-export default store;
+export default createStore(
+    rootRecuder, 
+    initialState,
+    compose(
+        middleware,
+        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    )
+);

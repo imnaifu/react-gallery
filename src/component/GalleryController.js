@@ -3,11 +3,9 @@ import React, { Component } from 'react';
 
 class GalleryController extends Component {
 
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
   }
-
-
 
   render() {
     return (
