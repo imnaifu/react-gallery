@@ -19,3 +19,10 @@ export function updateImgSize(index, value){
 		payload: value,
 	}
 }
+
+export function updateCurrentImg(value){
+	return {
+		type: 'UPDATE_CURRENT_IMG',
+		payload: value,
+	}
+}

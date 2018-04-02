@@ -28,7 +28,6 @@ let defaultStage = {
 	// 	scrollWidth: 0,
 	// 	scrollHeight: 0,
 	// },
-	currentImgIndex: 0
 };
 
 const stageReducer = (state=defaultStage, action) => {
@@ -52,13 +51,6 @@ const stageReducer = (state=defaultStage, action) => {
 		// 		}
 		// 	);
 		// 	break;
-
-		case 'UPDATE_CURRENT_IMG':
-			state = {
-					...state,				
-					currentImgIndex: action.payload,
-				};
-			break;
 
 		default:
 			break;

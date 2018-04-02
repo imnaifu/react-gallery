@@ -16,6 +16,10 @@ const imgReducer = (state=[], action) => {
 			state[action.index]['size'] = action.payload;		
 			break;
 
+		case 'UPDATE_CURRENT_IMG':
+			state[actiton.payload]['centered'] = true;
+			break;	
+
 		default:
 			break;
 	}
@@ -34,6 +38,7 @@ state = [
 		title: 'title here ',
 		description: 'description here'
 		fliped: false,
+		centered: false;
 		position: {
 			left: 10,
 			top: 200,

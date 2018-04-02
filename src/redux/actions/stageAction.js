@@ -11,10 +11,3 @@ export function updateStageSize(value){
 		payload: value,
 	}
 }
-
-export function updateCurrentImg(value){
-	return {
-		type: 'UPDATE_CURRENT_IMG',
-		payload: value,
-	}
-}

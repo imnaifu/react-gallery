@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import GalleryController from './GalleryController.js';
 import ImgFigure from './ImgFigure.js';
 
-import {updateImg, updateImgPosition} from '../redux/actions/imgAction.js';
+import {updateImg, updateImgPosition, updateCurrentImg} from '../redux/actions/imgAction.js';
 import {updateStagePosition} from '../redux/actions/stageAction.js';
 import {degreeRange} from '../config/config.js';
 
@@ -20,25 +20,20 @@ class Gallery extends Component {
         console.log('parent create');
         super(props);
         this.galleryRef = React.createRef();
-        this.initialImgs = this.getInitialImgs();
-        this.props.updateImg(this.initialImgs); 
-        
-        this.imgFigureJsx = []; //child element list
-        this.initialImgs.forEach((element, index) => {
-            this.imgFigureJsx.push(<ImgFigure key={index} index={index} onclick={this.setCenterImg}/>)
-        });
-        this.setCenterImg = this.setCenterImg.bind(this);
+        // this.setCenterImg = this.setCenterImg.bind(this);
     }
 
 	setCenterImg(e){
-		e.preventDefault();
-		const prevIndex = this.props.stage.currentImgIndex;
-		if (prevIndex === this.props.index){
-			//do nothing
-		}else{
-            this.props.updateCurrentImg(this.props.index);
+        // e.preventDefault();
+        console.log('123');
+        console.log(e, '123');
+		// const prevIndex = this.props.stage.currentImgIndex;
+		// if (prevIndex === this.props.index){
+		// 	//do nothing
+		// }else{
+        //     this.props.updateCurrentImg(this.props.index);
         
-		}
+		// }
     }
     
     getInitialImgs(){
@@ -46,6 +41,7 @@ class Gallery extends Component {
         imgs = imgs.map((each, index) => {
             each['path'] = require(`../data/${each['name']}`);
             each['fliped'] = false;
+            each['centered'] = false;
             each['position'] = {
                 left: 0,
                 top: 0,
@@ -60,7 +56,7 @@ class Gallery extends Component {
         return imgs;
     }
 
-    getStageInfo(galleryRef=undefined, imgSize=undefined){
+    getStageInfo(galleryRef, imgSize){
         const galleryWidth = galleryRef?galleryRef.current.scrollWidth:0;
         const galleryHeight = galleryRef?galleryRef.current.scrollHeight:0;
         const halfGalleryWidth = Math.ceil(galleryWidth / 2);
@@ -101,15 +97,15 @@ class Gallery extends Component {
     }
 
     render(){
-        console.log('parent render');
-        // this.rearrange(this.props.stage.currentImgIndex, this.props.stage, this.initialImgs);
+        console.log('parent render');   
+        const imgFigureJsx = this.renderImgFigure(this.props.img);
         return (
             <section className="gallery" ref={this.galleryRef}>
                 <section className="img-sec">
-                    {this.imgFigureJsx}
+                    {imgFigureJsx}
                 </section>
                 <nav className="gallery-controller">
-                    <GalleryController />
+                    <GalleryController></GalleryController>
                 </nav>
             </section>
         );
@@ -117,13 +113,26 @@ class Gallery extends Component {
 
     componentDidMount(){
         console.log('parent mount');
-        const stageInfo = this.getStageInfo(this.galleryRef, this.initialImgs[0].size);
+        const initialImgs = this.getInitialImgs();
+        const stageInfo = this.getStageInfo(this.galleryRef, initialImgs[0].size);
+        const imgs = this.arrangeImgs(stageInfo, initialImgs);
+
         this.props.updateStagePosition(stageInfo);
-        this.rearrange(this.props.stage.currentImgIndex, stageInfo, this.initialImgs);
+        this.props.updateImg(imgs);
     }
 
     componentDidUpdate(){
         console.log('parent update')
+    }
+
+    renderImgFigure(imgs){
+        const imgFigureJsx = []; //child element list
+        imgs.forEach((element, index) => {
+            imgFigureJsx.push(
+                <ImgFigure key={index} index={index} data={element} onClick={this.setCenterImg}/>
+            )
+        });
+        return imgFigureJsx;
     }
 
     /**
@@ -131,8 +140,8 @@ class Gallery extends Component {
      * @param center img index
      * @return array of new positions
      */
-    rearrange(centerIndex=0, stageInfo, imgs){
-        console.log('rere')
+    arrangeImgs(stageInfo, imgs){
+        console.log('arrangeImgs');
         const leftSide = stageInfo.leftSide;
         const rightSide = stageInfo.rightSide;
         const center = stageInfo.center;
@@ -140,26 +149,27 @@ class Gallery extends Component {
         //set position for let, right
         imgs = imgs.map((each, index) => {
             each['position'] = {};
-            if (index%2 === 1){
-                //put to left side
-                each['position']['left'] = this.getRandomBetween(leftSide.left.start, leftSide.left.end);
-                each['position']['top'] = this.getRandomBetween(leftSide.top.start, leftSide.top.end);
-                each['position']['degree'] = this.getRandomBetween(degreeRange.start, degreeRange.end);
-            }else{  
-                //put to right side
-                each['position']['left'] = this.getRandomBetween(rightSide.left.start, rightSide.left.end);
-                each['position']['top'] = this.getRandomBetween(rightSide.top.start, rightSide.top.end);
-                each['position']['degree'] = this.getRandomBetween(degreeRange.start, degreeRange.end);
+            if (each['centered']){
+                //set position for center
+                imgs[centerIndex]['position']['left'] = center.left;
+                imgs[centerIndex]['position']['top'] = center.top;
+                imgs[centerIndex]['position']['degree'] = 0;
+            }else{
+                if (index%2 === 1){
+                    //put to left side
+                    each['position']['left'] = this.getRandomBetween(leftSide.left.start, leftSide.left.end);
+                    each['position']['top'] = this.getRandomBetween(leftSide.top.start, leftSide.top.end);
+                    each['position']['degree'] = this.getRandomBetween(degreeRange.start, degreeRange.end);
+                }else{  
+                    //put to right side
+                    each['position']['left'] = this.getRandomBetween(rightSide.left.start, rightSide.left.end);
+                    each['position']['top'] = this.getRandomBetween(rightSide.top.start, rightSide.top.end);
+                    each['position']['degree'] = this.getRandomBetween(degreeRange.start, degreeRange.end);
+                }    
             }
             return each;
         });
-
-        //set position for center
-        imgs[centerIndex]['position']['left'] = center.left;
-        imgs[centerIndex]['position']['top'] = center.top;
-        imgs[centerIndex]['position']['degree'] = 0;
-
-        this.props.updateImg(imgs);
+        return imgs;
     }
 
     getRandomBetween(low, high){
