@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import { updateImgSize } from '../redux/actions/imgAction.js';
+import { updateImgSize, updateCurrentImg } from '../redux/actions/imgAction.js';
 
 //组件以数组的形式同时render的时候，先全部construct，然后再是一个一个mount
 //props在创建的时候已经固定了
@@ -16,8 +16,10 @@ class ImgFigure extends Component {
 
 	constructor(props) {
 		console.log('child create');
+		//first time here props got initial img data
 		super(props);
 		this.figureRef = React.createRef();
+		this.setCenterImg = this.setCenterImg.bind(this);
 	}
 
 	componentDidMount(){
@@ -26,7 +28,10 @@ class ImgFigure extends Component {
 			width: this.figureRef.current.scrollWidth,		
 			height: this.figureRef.current.scrollHeight,
 		};
-		this.props.updateImgSize(this.props.index, imgSize);		
+		//set img size
+		this.props.updateImgSize(this.props.index, imgSize);
+		//set img to default center
+		this.props.updateCurrentImg(this.props.index);		
 	}
 
 	// methods
@@ -38,7 +43,7 @@ class ImgFigure extends Component {
 			transform: `rotate(${this.props.data.position.degree}deg)`,
 		}
 		return (
-			<figure className='img-figure' ref={this.figureRef} style={style} >
+			<figure className='img-figure' ref={this.figureRef} style={style} onClick={this.setCenterImg} >
 				<img src={this.props.data.path} alt={this.props.data.title}/>
 				<figcaption className='img-caption'>
 					<h2>{this.props.data.title}</h2>
@@ -46,18 +51,31 @@ class ImgFigure extends Component {
 			</figure>
 		);
 	}
+	
+	componentDidUpdate(){
+		console.log('child update');
+	}
 
+	setCenterImg(e){
+		e.preventDefault();
+		//click control leave it here inside the component
+		if (this.props.data.centered === false){
+			//set to center
+			this.props.updateCurrentImg(this.props.index);
+		}
+	}
 }
 
 const mapStateToProps = (store, ownProps) => {
     return {
-		img: store.img,
-        stage: store.stage,
+		// img: store.img,
+        // stage: store.stage,
     }
 };
 
 const mapDispatchToProps = {
 	updateImgSize,
+	updateCurrentImg,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ImgFigure);

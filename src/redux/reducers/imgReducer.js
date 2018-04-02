@@ -1,29 +1,37 @@
+import * as _ from 'lodash';
+
 const imgReducer = (state=[], action) => {
 	//do not modify state directly, or it will not able to 'time travel'
+	let stateClone = _.cloneDeep(state);
 	switch (action.type) {
 		case 'UPDATE_IMG':
-			state = action.payload;
+			stateClone = action.payload;
 			break;
 
 		case 'UPDATE_IMG_POSITIONS':
-			state = state.map((each, index) => {
+			stateClone.forEach((each, index) => {
 				each.position = action.payload[index];
-				return each; 
 			});
 			break;
 		
 		case 'UPDATE_IMG_SIZE':
-			state[action.index]['size'] = action.payload;		
+			stateClone[action.index]['size'] = action.payload;		
 			break;
 
 		case 'UPDATE_CURRENT_IMG':
-			state[actiton.payload]['centered'] = true;
+			stateClone.forEach((each, index) => {
+				if (index === action.payload){
+					stateClone[index]['centered'] = true;
+				}else{
+					stateClone[index]['centered'] = false;					
+				}
+			});
 			break;	
 
 		default:
 			break;
 	}
-	return state;
+	return stateClone;
 }
 
 export default imgReducer;	

@@ -1,13 +1,12 @@
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import * as _ from 'lodash';
 
-// import store from '../redux/store.js';
 import GalleryController from './GalleryController.js';
 import ImgFigure from './ImgFigure.js';
 
-import {updateImg, updateImgPosition, updateCurrentImg} from '../redux/actions/imgAction.js';
-import {updateStagePosition} from '../redux/actions/stageAction.js';
-import {degreeRange} from '../config/config.js';
+import { updateImg } from '../redux/actions/imgAction.js';
+import { degreeRange } from '../config/config.js';
 
 
 //每次update都会运行render
@@ -21,24 +20,65 @@ class Gallery extends Component {
         super(props);
         this.galleryRef = React.createRef();
         // this.setCenterImg = this.setCenterImg.bind(this);
+    
+        this.initialImgs = this.getInitialImgs();
+        this.props.updateImg(this.initialImgs); 
+        //first time here props still empty
     }
 
-	setCenterImg(e){
-        // e.preventDefault();
-        console.log('123');
-        console.log(e, '123');
-		// const prevIndex = this.props.stage.currentImgIndex;
-		// if (prevIndex === this.props.index){
-		// 	//do nothing
-		// }else{
-        //     this.props.updateCurrentImg(this.props.index);
+    render(){
+        //fist time here this.props still empty
+        console.log('parent render');   
         
-		// }
+        let imgFigureJsx;
+        if (this.props.img.length){
+            //next round
+            const stageInfo = this.getStageInfo(this.galleryRef, this.props.img[0].size);
+            const imgs = this.arrangeImgs(stageInfo, this.props.img);
+            imgFigureJsx = this.renderImgFigure(imgs);
+        }else{
+            //first time render inital images
+            imgFigureJsx = this.renderImgFigure(this.initialImgs);
+        }
+
+        return (
+            <section className="gallery" ref={this.galleryRef}>
+                <section className="img-sec">
+                    {imgFigureJsx}
+                </section>
+                <nav className="gallery-controller">
+                    <GalleryController></GalleryController>
+                </nav>
+            </section>
+        );
     }
+
+    componentDidMount(){
+        console.log('parent mount');
+        //first time here props also empty        
+    }
+
+    componentDidUpdate(){
+        console.log('parent update');
+    }
+
+    // setCenterImg(){
+    //     // e.preventDefault();
+    //     console.log('123');
+    //     // console.log(e, '123');
+	// 	// const prevIndex = this.props.stage.currentImgIndex;
+	// 	// if (prevIndex === this.props.index){
+	// 	// 	//do nothing
+	// 	// }else{
+    //     //     this.props.updateCurrentImg(this.props.index);
+        
+	// 	// }
+    // }
     
     getInitialImgs(){
-        let imgs = require('../data/images.json');
-        imgs = imgs.map((each, index) => {
+        const imgs = require('../data/images.json');
+        imgs.forEach((each, index) => {
+            //here each is object, passed by reference
             each['path'] = require(`../data/${each['name']}`);
             each['fliped'] = false;
             each['centered'] = false;
@@ -51,7 +91,6 @@ class Gallery extends Component {
                 width: 0,
                 height: 0,
             };            
-            return each;
         });
         return imgs;
     }
@@ -96,40 +135,11 @@ class Gallery extends Component {
         return stage;
     }
 
-    render(){
-        console.log('parent render');   
-        const imgFigureJsx = this.renderImgFigure(this.props.img);
-        return (
-            <section className="gallery" ref={this.galleryRef}>
-                <section className="img-sec">
-                    {imgFigureJsx}
-                </section>
-                <nav className="gallery-controller">
-                    <GalleryController></GalleryController>
-                </nav>
-            </section>
-        );
-    }
-
-    componentDidMount(){
-        console.log('parent mount');
-        const initialImgs = this.getInitialImgs();
-        const stageInfo = this.getStageInfo(this.galleryRef, initialImgs[0].size);
-        const imgs = this.arrangeImgs(stageInfo, initialImgs);
-
-        this.props.updateStagePosition(stageInfo);
-        this.props.updateImg(imgs);
-    }
-
-    componentDidUpdate(){
-        console.log('parent update')
-    }
-
     renderImgFigure(imgs){
         const imgFigureJsx = []; //child element list
         imgs.forEach((element, index) => {
             imgFigureJsx.push(
-                <ImgFigure key={index} index={index} data={element} onClick={this.setCenterImg}/>
+                <ImgFigure key={index} index={index} data={element}/>
             )
         });
         return imgFigureJsx;
@@ -141,19 +151,18 @@ class Gallery extends Component {
      * @return array of new positions
      */
     arrangeImgs(stageInfo, imgs){
-        console.log('arrangeImgs');
+        const cloneImgs = _.cloneDeep(imgs);
         const leftSide = stageInfo.leftSide;
         const rightSide = stageInfo.rightSide;
         const center = stageInfo.center;
 
         //set position for let, right
-        imgs = imgs.map((each, index) => {
-            each['position'] = {};
+        cloneImgs.forEach((each, index) => {
             if (each['centered']){
                 //set position for center
-                imgs[centerIndex]['position']['left'] = center.left;
-                imgs[centerIndex]['position']['top'] = center.top;
-                imgs[centerIndex]['position']['degree'] = 0;
+                each['position']['left'] = center.left;
+                each['position']['top'] = center.top;
+                each['position']['degree'] = 0;
             }else{
                 if (index%2 === 1){
                     //put to left side
@@ -167,9 +176,8 @@ class Gallery extends Component {
                     each['position']['degree'] = this.getRandomBetween(degreeRange.start, degreeRange.end);
                 }    
             }
-            return each;
         });
-        return imgs;
+        return cloneImgs;
     }
 
     getRandomBetween(low, high){
@@ -181,14 +189,11 @@ class Gallery extends Component {
 const mapStateToProps = (store) => {
     return {
         img: store.img,
-        stage: store.stage,
     }
 };
 
 const mapDispatchToProps = {
     updateImg,
-    updateImgPosition,
-    updateStagePosition,
 }
 
 
