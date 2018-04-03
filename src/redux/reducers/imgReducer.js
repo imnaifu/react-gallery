@@ -21,9 +21,12 @@ const imgReducer = (state=[], action) => {
 		case 'UPDATE_CURRENT_IMG':
 			stateClone.forEach((each, index) => {
 				if (index === action.payload){
+					//center
 					stateClone[index]['centered'] = true;
 				}else{
+					//not center
 					stateClone[index]['centered'] = false;					
+					stateClone[index]['fliped'] = false;					
 				}
 			});
 			break;	

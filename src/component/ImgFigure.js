@@ -31,7 +31,7 @@ class ImgFigure extends Component {
 		//set img size
 		this.props.updateImgSize(this.props.index, imgSize);
 		//set img to default center
-		this.props.updateCurrentImg(this.props.index);		
+		this.props.updateCurrentImg(0);		
 	}
 
 	// methods
@@ -42,36 +42,22 @@ class ImgFigure extends Component {
 			...this.props.data.position,
 			transform: (!this.props.data.centered)
 						?`rotate(${this.props.data.position.degree}deg)`
-						:`scale(1.1) rotate(${this.props.data.position.degree}deg)`,
+						:'',
 		}
 
-		const centerClass = (this.props.data.centered)?'is-center':'not-center';
-		let imgContent;
-
-		if (this.props.data.fliped){
-			//back
-			imgContent = (
-				<div className='img-div flip-back'>
-					<p>{this.props.data.description}</p>
-				</div>
-			);
-	
-		}else{
-			//front
-			imgContent = (
-				<div className='img-div flip-front'>
-					<img src={this.props.data.path} alt={this.props.data.title}/>
-					<figcaption className='img-caption'>
-						<h2>{this.props.data.title}</h2>
-					</figcaption>
-				</div>
-			);			
-		}
+		const centerClass = (this.props.data.centered)?' is-center ':' not-center ';
+		const flipClass = (this.props.data.fliped)?' fliped ':'';
 
 		return (
-			<figure className={'img-figure ' + centerClass} ref={this.figureRef} 
+			<figure className={'img-figure ' + flipClass} ref={this.figureRef} 
 				style={style} onClick={this.handleClick} >
-				{imgContent}
+				<img src={this.props.data.path} alt={this.props.data.title}/>
+				<figcaption className='img-caption'>
+					<h2>{this.props.data.title}</h2>
+					<div className='img-back' onClick={this.handleClick}>
+						<p>{this.props.data.description}</p>
+					</div>
+				</figcaption>
 			</figure>
 		);
 	}
@@ -82,6 +68,7 @@ class ImgFigure extends Component {
 
 	handleClick(e){
 		e.preventDefault();
+		e.stopPropagation();
 		//click control leave it here inside the component
 		if (this.props.data.centered === false){
 			//set to center

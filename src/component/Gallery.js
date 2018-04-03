@@ -147,7 +147,7 @@ class Gallery extends Component {
             },
             center: {
                 left: halfGalleryWidth - halfImgFigureWidth, //中间水平方向值
-                top: halfGalleryHeight - halfImgFigureHeight, //中间垂直方向值
+                top: halfGalleryHeight - halfImgFigureHeight - 50, //中间垂直方向值
             },
         };
         return stage;

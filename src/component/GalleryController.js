@@ -25,7 +25,7 @@ class GalleryController extends Component {
                 //     fontImg = <FontAwesomeIcon icon={faRedo}/>
                 // }
                 controller.push(
-                    <div className='controller-item' 
+                    <div className={`controller-item ${each['centered']?'is-center':''}`}
                         key={index} onClick={(e) => this.handleClick(e, index)}>
                         {index+1}
                     </div>
