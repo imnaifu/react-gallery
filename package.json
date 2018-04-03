@@ -29,6 +29,9 @@
     "webpack-dev-server": "^3.1.1"
   },
   "dependencies": {
+    "@fortawesome/fontawesome": "^1.1.5",
+    "@fortawesome/fontawesome-free-solid": "^5.0.9",
+    "@fortawesome/react-fontawesome": "0.0.18",
     "axios": "^0.18.0",
     "lodash": "^4.17.5",
     "node": "^9.10.1",

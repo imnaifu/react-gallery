@@ -1,6 +1,6 @@
 const degreeRange = {
-	start: -30,
-	end: 30
+	start: -20,
+	end: 20
 }
 
 

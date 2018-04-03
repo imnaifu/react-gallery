@@ -1,11 +1,11 @@
 html, body {
-  margin: 0;
-  padding: 0;
-  font-family: sans-serif;
-  width: 100%;
-  height: 100%;
-  background-color: #222;
-  box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+	font-family: sans-serif;
+	width: 100%;
+	height: 100%;
+	background-color: #222;
+	box-sizing: border-box;
 }
 
 .app {
@@ -28,14 +28,20 @@ html, body {
 	// 提到最外层
 	@at-root {
 		.img-figure {
+			cursor: pointer;		
 			width: 320px;
 			height: 360px;
 			margin: 0;
-			padding: 40px;
-			background-color: #fff;
-
+			padding: 0;
 			position: absolute;
+			transition: left 0.7s, top 0.7s; 
 		}	
+
+		.img-div {
+			background-color: #fff;
+			width: 100%;
+			height: 100%;
+		}
 
 		figcaption {
 			text-align: center;
@@ -45,21 +51,35 @@ html, body {
 				font-size: 16px;
 			}
 		}
+
+		.is-center {
+			//center firgure
+		}
+
 	}
 }
 
+
 /* controller */
-.controller-sec {
 
-}
-
-.controller-nav {
+.gallery-controller {
 	position: absolute;	
 	left: 0;
-	bottom: 30px;
+	bottom: 125px;
 	z-index: 100;
 	width: 100%;
 	text-align: center;
+}
+
+.controller-item {
+	width: 30px;
+	height: 30px;
+	border-radius: 15px;
+	background-color: grey;
+	display: inline-block;
+	margin: 10px;
+	line-height: 30px;
+	cursor: pointer;
 }
 /* controller */
 

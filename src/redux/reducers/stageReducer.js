@@ -1,63 +1,20 @@
-let defaultStage = {
-	leftSide: {
-		left: {
-			start: 0, //左侧水平方向最小值
-			end: 0, //左侧水平方向最大值
-		},
-		top: {
-			start: 0, //左侧垂直方向最小值
-			end: 0, //左侧垂直方向最大值
-		}
-	},
-	rightSide: {
-		left: {
-			start: 0, //右侧水平方向最小值
-			end: 0, //右侧水平方向最大值
-		},
-		top: {
-			start: 0, //右侧垂直方向最小值
-			end: 0, //右侧垂直方向最大值
-		}		
-	},
-	center: {
-		left: 0, //中间水平方向值
-		top: 0, //中间垂直方向值
-	},
-	// stageSize: {
-	// 	//gallery size
-	// 	scrollWidth: 0,
-	// 	scrollHeight: 0,
-	// },
-};
+import * as _ from 'lodash';
+let imgPositionInfo = [];
 
-const stageReducer = (state=defaultStage, action) => {
+const stageReducer = (state=imgPositionInfo, action) => {
 	//do not modify state directly, or it will not able to 'time travel'
-
+	let stateClone = _.cloneDeep(state);
 	switch (action.type) {
-		case 'UPDATE_STAGE_POSITION':
-			state = {
-				...state,			
-				leftSide: action.payload.leftSide,
-				rightSide: action.payload.rightSide,
-				center: action.payload.center				
-			};
+		case 'UPDATE_IMG_POSITIONS':
+			// stateClone = action.payload;
 			break;
-
-		// case 'UPDATE_STAGE_SIZE':
-		// 	state = Object.assign(
-		// 		state, 
-		// 		{				
-		// 			stageSize: action.payload,
-		// 		}
-		// 	);
-		// 	break;
 
 		default:
 			break;
 	}
 
 	//must return new state here
-	return state;
+	return stateClone;
 }
 
 export default stageReducer;	

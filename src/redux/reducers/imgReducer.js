@@ -8,11 +8,11 @@ const imgReducer = (state=[], action) => {
 			stateClone = action.payload;
 			break;
 
-		case 'UPDATE_IMG_POSITIONS':
-			stateClone.forEach((each, index) => {
-				each.position = action.payload[index];
-			});
-			break;
+		// case 'UPDATE_IMG_POSITIONS':
+		// 	stateClone.forEach((each, index) => {
+		// 		each.position = action.payload[index];
+		// 	});
+		// 	break;
 		
 		case 'UPDATE_IMG_SIZE':
 			stateClone[action.index]['size'] = action.payload;		
@@ -28,6 +28,10 @@ const imgReducer = (state=[], action) => {
 			});
 			break;	
 
+		case 'UPDATE_FLIPED_IMG':
+			stateClone[action.payload]['fliped'] = !stateClone[action.payload]['fliped'];
+			break;	
+		
 		default:
 			break;
 	}
@@ -47,11 +51,11 @@ state = [
 		description: 'description here'
 		fliped: false,
 		centered: false;
-		position: {
-			left: 10,
-			top: 200,
-			degree: 20, //transform: rotate(20deg)
-		},	
+		// position: {
+		// 	left: 10,
+		// 	top: 200,
+		// 	degree: 20, //transform: rotate(20deg)
+		// },	
 		size: {
 			width: 0,
 			height: 0

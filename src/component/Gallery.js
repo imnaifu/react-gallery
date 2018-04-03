@@ -6,6 +6,7 @@ import GalleryController from './GalleryController.js';
 import ImgFigure from './ImgFigure.js';
 
 import { updateImg } from '../redux/actions/imgAction.js';
+import { updateImsPositions } from '../redux/actions/stageAction.js';
 import { degreeRange } from '../config/config.js';
 
 
@@ -24,6 +25,16 @@ class Gallery extends Component {
         this.initialImgs = this.getInitialImgs();
         this.props.updateImg(this.initialImgs); 
         //first time here props still empty
+        this.state = {
+			imgs: []
+		};
+    }
+
+    getSnapshotBeforeUpdate(prevProps, prevState){
+        console.log('getSnapshotBeforeUpdate');
+        console.log(prevProps);
+        console.log(this.props);
+        return null;
     }
 
     render(){
@@ -34,8 +45,28 @@ class Gallery extends Component {
         if (this.props.img.length){
             //next round
             const stageInfo = this.getStageInfo(this.galleryRef, this.props.img[0].size);
-            const imgs = this.arrangeImgs(stageInfo, this.props.img);
+
+            //here to stop position change when img flip
+            let needToRearrangePosition = false;   
+            if (this.savedImgs){
+                this.savedImgs.forEach((each, index) => {
+                    if (each.centered !== this.props.img[index].centered){
+                        needToRearrangePosition = true;
+                    }
+                    each['fliped'] = this.props.img[index].fliped;                    
+                });                    
+            }else{
+                needToRearrangePosition = true;
+            }
+            let imgs = [];
+            if (needToRearrangePosition){
+                imgs = this.arrangeImgs(stageInfo, this.props.img);
+            }else{
+                imgs = _.cloneDeep(this.savedImgs);
+            }
+
             imgFigureJsx = this.renderImgFigure(imgs);
+            this.savedImgs = imgs; //save as prevstate.
         }else{
             //first time render inital images
             imgFigureJsx = this.renderImgFigure(this.initialImgs);
@@ -47,7 +78,7 @@ class Gallery extends Component {
                     {imgFigureJsx}
                 </section>
                 <nav className="gallery-controller">
-                    <GalleryController></GalleryController>
+                    <GalleryController data={this.props.img}></GalleryController>
                 </nav>
             </section>
         );
@@ -62,19 +93,6 @@ class Gallery extends Component {
         console.log('parent update');
     }
 
-    // setCenterImg(){
-    //     // e.preventDefault();
-    //     console.log('123');
-    //     // console.log(e, '123');
-	// 	// const prevIndex = this.props.stage.currentImgIndex;
-	// 	// if (prevIndex === this.props.index){
-	// 	// 	//do nothing
-	// 	// }else{
-    //     //     this.props.updateCurrentImg(this.props.index);
-        
-	// 	// }
-    // }
-    
     getInitialImgs(){
         const imgs = require('../data/images.json');
         imgs.forEach((each, index) => {
@@ -194,10 +212,11 @@ const mapStateToProps = (store) => {
 
 const mapDispatchToProps = {
     updateImg,
+    updateImsPositions,
 }
 
 
-//ES7 decorator
+//ES7 decorator better
 //connect(mapStateToProps, mapDispatchToProps)
 //return object with props = states
 //then can be used as normal props

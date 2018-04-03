@@ -4,7 +4,7 @@ import stage from './stageReducer';
 
 const rootReducer = combineReducers({
 	img,
-	stage,
+	stage,	
 });
 
 export default rootReducer;

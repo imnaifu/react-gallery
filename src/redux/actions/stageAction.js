@@ -1,13 +1,6 @@
-export function updateStagePosition(value){
+export function updateImsPositions(value){
 	return {
-		type: 'UPDATE_STAGE_POSITION',
-		payload: value,
-	}
-}
-
-export function updateStageSize(value){
-	return {
-		type: 'UPDATE_STAGE_SIZE',
+		type: 'UPDATE_IMG_POSITIONS',
 		payload: value,
 	}
 }
