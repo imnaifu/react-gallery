@@ -7,12 +7,6 @@ const imgReducer = (state=[], action) => {
 		case 'UPDATE_IMG':
 			stateClone = action.payload;
 			break;
-
-		// case 'UPDATE_IMG_POSITIONS':
-		// 	stateClone.forEach((each, index) => {
-		// 		each.position = action.payload[index];
-		// 	});
-		// 	break;
 		
 		case 'UPDATE_IMG_SIZE':
 			stateClone[action.index]['size'] = action.payload;		

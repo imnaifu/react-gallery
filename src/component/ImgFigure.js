@@ -14,7 +14,7 @@ import { updateImgSize, updateCurrentImg, updateFlipedImg } from '../redux/actio
 class ImgFigure extends Component {
 
 	constructor(props) {
-		console.log('child create');
+		// console.log('child create');
 		//first time here props got initial img data
 		super(props);
 		this.figureRef = React.createRef();
@@ -23,7 +23,7 @@ class ImgFigure extends Component {
 	}
 
 	componentDidMount(){
-		console.log('child mount');
+		// console.log('child mount');
 		const imgSize = {
 			width: this.figureRef.current.scrollWidth,		
 			height: this.figureRef.current.scrollHeight,
@@ -36,7 +36,7 @@ class ImgFigure extends Component {
 
 	// methods
 	render(){
-		console.log('child render')
+		// console.log('child render')
 		const index = this.props.index;
 		const style = {
 			...this.props.data.position,
@@ -63,7 +63,7 @@ class ImgFigure extends Component {
 	}
 	
 	componentDidUpdate(){
-		console.log('child update');
+		// console.log('child update');
 	}
 
 	handleClick(e){
@@ -83,7 +83,6 @@ class ImgFigure extends Component {
 const mapStateToProps = (store, ownProps) => {
     return {
 		// img: store.img,
-        // stage: store.stage,
     }
 };
 

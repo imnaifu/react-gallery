@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
-import FontAwesomeIcon from '@fortawesome/react-fontawesome';
-import faUndo from '@fortawesome/fontawesome-free-solid/faUndo';
-import faRedo from '@fortawesome/fontawesome-free-solid/faRedo';
-
 import { updateCurrentImg, updateFlipedImg } from '../redux/actions/imgAction.js';
 
 class GalleryController extends Component {
@@ -17,13 +13,6 @@ class GalleryController extends Component {
         let controller = [];
         if (this.props.data.length){
             this.props.data.forEach((each, index) => {
-                // icon
-                // let fontImg;
-                // if (each['fliped'] === true){
-                //     fontImg = <FontAwesomeIcon icon={faUndo}/>
-                // }else{
-                //     fontImg = <FontAwesomeIcon icon={faRedo}/>
-                // }
                 controller.push(
                     <div className={`controller-item ${each['centered']?'is-center':''}`}
                         key={index} onClick={(e) => this.handleClick(e, index)}>
@@ -55,7 +44,6 @@ class GalleryController extends Component {
 const mapStateToProps = (store, ownProps) => {
     return {
 		// img: store.img,
-        // stage: store.stage,
     }
 };
 

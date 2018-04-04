@@ -6,7 +6,6 @@ import GalleryController from './GalleryController.js';
 import ImgFigure from './ImgFigure.js';
 
 import { updateImg } from '../redux/actions/imgAction.js';
-import { updateImsPositions } from '../redux/actions/stageAction.js';
 import { degreeRange } from '../config/config.js';
 
 
@@ -206,7 +205,6 @@ const mapStateToProps = (store) => {
 
 const mapDispatchToProps = {
     updateImg,
-    updateImsPositions,
 }
 
 
