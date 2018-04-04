@@ -17,29 +17,23 @@ import { degreeRange } from '../config/config.js';
 class Gallery extends Component {
 
     constructor(props){
-        console.log('parent create');
+        // console.log('parent create');
         super(props);
         this.galleryRef = React.createRef();
-        // this.setCenterImg = this.setCenterImg.bind(this);
     
         this.initialImgs = this.getInitialImgs();
         this.props.updateImg(this.initialImgs); 
         //first time here props still empty
-        this.state = {
-			imgs: []
-		};
     }
 
     getSnapshotBeforeUpdate(prevProps, prevState){
-        console.log('getSnapshotBeforeUpdate');
-        console.log(prevProps);
-        console.log(this.props);
+        // console.log('getSnapshotBeforeUpdate');
         return null;
     }
 
     render(){
         //fist time here this.props still empty
-        console.log('parent render');   
+        // console.log('parent render');   
         
         let imgFigureJsx;
         if (this.props.img.length){
@@ -85,12 +79,12 @@ class Gallery extends Component {
     }
 
     componentDidMount(){
-        console.log('parent mount');
+        // console.log('parent mount');
         //first time here props also empty        
     }
 
     componentDidUpdate(){
-        console.log('parent update');
+        // console.log('parent update');
     }
 
     getInitialImgs(){
