@@ -45,12 +45,12 @@ class ImgFigure extends Component {
 						:'',
 		}
 
-		const centerClass = (this.props.data.centered)?' is-center ':' not-center ';
+		const centerClass = (this.props.data.centered)?' centered ':'';
 		const flipClass = (this.props.data.fliped)?' fliped ':'';
 
 		return (
-			<figure className={'img-figure ' + flipClass} ref={this.figureRef} 
-				style={style} onClick={this.handleClick} >
+			<figure className={'img-figure ' + flipClass + centerClass} 
+				ref={this.figureRef} style={style} onClick={this.handleClick} >
 				<img src={this.props.data.path} alt={this.props.data.title}/>
 				<figcaption className='img-caption'>
 					<h2>{this.props.data.title}</h2>
@@ -68,7 +68,7 @@ class ImgFigure extends Component {
 
 	handleClick(e){
 		e.preventDefault();
-		e.stopPropagation();
+		e.stopPropagation(); //stop run twice
 		//click control leave it here inside the component
 		if (this.props.data.centered === false){
 			//set to center
