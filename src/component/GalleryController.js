@@ -15,7 +15,7 @@ class GalleryController extends Component {
             this.props.data.forEach((each, index) => {
                 controller.push(
                     <div className={`controller-item ${each['centered']?'is-center':''}`}
-                        key={index} onMouseOver={(e) => this.handleClick(e, index)}>
+                        key={index} onMouseOver={(e) => this.handleMouseOver(e, index)}>
                         {index+1}
                     </div>
                 )   
@@ -29,14 +29,14 @@ class GalleryController extends Component {
         );
     }
 
-    handleClick(e, index){
+    handleMouseOver(e, index){
         e.preventDefault();
 		if (this.props.data[index].centered === false){
 			//set to center 
 			this.props.updateCurrentImg(index);
 		}else{
 			//flip
-			this.props.updateFlipedImg(index);
+		    	// this.props.updateFlipedImg(index);
 		}
     }
 }
