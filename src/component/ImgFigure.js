@@ -49,7 +49,7 @@ class ImgFigure extends Component {
 		const flipClass = (this.props.data.fliped)?' fliped ':'';
 
 		return (
-			<figure className={'img-figure ' + flipClass + centerClass} 
+			<figure className={'img-figure ' + flipClass + centerClass} title='Click to flip' 
 				ref={this.figureRef} style={style} onClick={this.handleClick} >
 				<img src={this.props.data.path} alt={this.props.data.title}/>
 				<figcaption className='img-caption'>
