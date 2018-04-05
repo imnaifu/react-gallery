@@ -19,6 +19,7 @@
     "css-loader": "^0.28.11",
     "file-loader": "^1.1.11",
     "node-sass": "^4.8.3",
+    "redux-devtools": "^3.4.1",
     "sass-loader": "^6.0.7",
     "style-loader": "^0.20.3",
     "uglifyjs-webpack-plugin": "^1.2.4",
@@ -34,7 +35,6 @@
     "react-dom": "^16.3.0",
     "react-redux": "^5.0.7",
     "redux": "^3.7.2",
-    "redux-devtools": "^3.4.1",
     "redux-logger": "^3.0.6"
   }
 }
