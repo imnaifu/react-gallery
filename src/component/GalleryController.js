@@ -15,10 +15,10 @@ class GalleryController extends Component {
             this.props.data.forEach((each, index) => {
                 controller.push(
                     <div className={`controller-item ${each['centered']?'is-center':''}`}
-                        key={index} onClick={(e) => this.handleClick(e, index)}>
+                        key={index} onMouseOver={(e) => this.handleClick(e, index)}>
                         {index+1}
                     </div>
-                )
+                )   
             });
         }
 
