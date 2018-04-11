@@ -196,13 +196,14 @@ class Gallery extends Component {
     }
 }
 
-
+//让redux的state可以通过props访问
 const mapStateToProps = (store) => {
     return {
         img: store.img,
     }
 };
 
+//让redux的action可以通过props访问
 const mapDispatchToProps = {
     updateImg,
 }
